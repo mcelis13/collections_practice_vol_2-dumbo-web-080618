@@ -34,17 +34,25 @@ end
 
 def count_elements(arrayOfObjs)
   newArrayOfObjects = []
+  keys = []
+  values = []
+  count = 0
 
   arrayOfObjs.each do |obj|
     obj.each do |key, value|
-      if newArrayOfObjects.include?(value) == false #this will alway be false because this is
-        #asking if the array has the value but the array actually houses an obj so we need to access whether
-        #the object inside of the array has the value!!
-        newArrayOfObjects.push({ key => value, :count => 0}) #necessary to create a obj inside of newArray
-      end # end of if statement
+      if values.include?(value) == false
+        keys << key
+        values << value
+        count = 1
+        newArrayOfObjects << {key => value, :count => count}
+      elsif values.include?(value) == true
+        count += 1
+        newArrayOfObjects.each do |new_obj|
+          new_obj[:count] = count
+        end
+      end
     end # end of obj.each
   end # end of arrayOfObj
-
   newArrayOfObjects
 end
 
@@ -60,8 +68,23 @@ def find_cool(arrayOfObjs)
 end
 
 def merge_data(keys, data)
- keys.each { |obj| puts obj.keys}
-end
+mergedObj = {}
+arrayOfMergedObjs = []
+
+  keys.each do |obj|
+    obj.each do |first_name_key, name_value|
+       data.each do |dataObj|
+         dataObj.each do |name_stored, anotherObj|
+           if name_stored == name_value
+              mergedObj = obj.merge(anotherObj)
+           end
+         end#dataObj.each
+       end #data.each
+     end#obj.each
+     arrayOfMergedObjs << mergedObj
+   end #keys each
+   arrayOfMergedObjs
+end#func
 
 def organize_schools(hash)
   organized_schools_obj = {}
